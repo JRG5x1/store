@@ -6,14 +6,16 @@
         "Stock Images", {
             "url": "http://github.com/ZaneThePython/StockImageTheme"
         },
+        "Rewind16", {
+            "url": "http://github.com/ZaneThePython/Rewind16Theme"
+        },
         "None", {
             "url": "."
         }
     ],
     "skills": [
-        "Note, this is just a placeholder section, custom skills will be implemented later",
-        "APOD", {
-            "url": "https://github.com/TTL/APOD"
+        "Bad Apple", {
+            "url": "https://github.com/ZaneThePython/BadApple"
         }
     ]
 }

@@ -9,6 +9,9 @@
         "Rewind16", {
             "url": "http://github.com/ZaneThePython/Rewind16Theme"
         },
+        "Rewind14", {
+            "url": "http://github.com/ZaneThePython/Rewind14"
+        },
         "None", {
             "url": "."
         }

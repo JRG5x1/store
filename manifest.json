@@ -1,0 +1,16 @@
+{
+    "themes": [
+        "Astra", {
+            "url": "https://github.com/ZaneThePython/Astra"
+        },
+        "None", {
+            "url": "."
+        }
+    ],
+    "skills": [
+        "Note, this is just a placeholder section, custom skills will be implemented later",
+        "APOD", {
+            "url": "https://github.com/TTL/APOD"
+        }
+    ]
+}

@@ -3,6 +3,9 @@
         "Astra", {
             "url": "http://github.com/ZaneThePython/Astra"
         },
+        "Stock Images", {
+            "url": "http://github.com/ZaneThePython/StockImageTheme"
+        },
         "None", {
             "url": "."
         }

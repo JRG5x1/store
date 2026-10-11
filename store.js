@@ -84,6 +84,16 @@
     async function metadata(entry) {
         if (entry.stock) return {description:"Jibo's stock face and menus.",readme:'Restore the stock appearance by selecting None in BEacon.'};
         const source = locationFor(entry);const base = source.base;
+        const repository = source.repository ? new URL(entry.url).pathname.split('/').filter(Boolean) : null;
+        const developer = repository ? repository[0] : '';
+        async function popularity() {
+            if (!repository) return {};
+            if (entry.starsFetchedAt && Date.now() - entry.starsFetchedAt < 60 * 60 * 1000) return {developer,stars:entry.stars,starsFetchedAt:entry.starsFetchedAt};
+            try {
+                const repo = JSON.parse(await text('https://api.github.com/repos/' + repository.map(encodeURIComponent).join('/'),false,1024*1024));
+                return {developer:repo.owner && repo.owner.login || developer,stars:typeof repo.stargazers_count === 'number' ? repo.stargazers_count : null,starsFetchedAt:Date.now()};
+            } catch (err) { return {developer,stars:typeof entry.stars === 'number' ? entry.stars : null,starsFetchedAt:Date.now()}; }
+        }
         const results = await Promise.allSettled([
             (async () => {
                 let raw = await text(source.manifest || base+'manifest.json',entry.section === 'skills',65536);
@@ -94,14 +104,14 @@
                 if (!packageMetadata && data.type && data.type !== (entry.section === 'themes'?'theme':'skill')) throw new Error('Unexpected package type');
                 return data;
             })(),
-            text(base+'README.md',true,256*1024)
+            text(base+'README.md',true,256*1024), popularity()
         ]);
         const manifest = results[0].status === 'fulfilled' ? results[0].value : entry;
         const readme = results[1].status === 'fulfilled' ? results[1].value || '' : entry.readme || '';
-        const errors = results.filter(r => r.status === 'rejected').map(r => r.reason.message);
-        return {name:typeof manifest.name === 'string' && manifest.name.trim() ? manifest.name : entry.name,version:typeof manifest.version === 'string' ? manifest.version : '',supported:typeof manifest.supported === 'string' ? manifest.supported : '',
+        const errors = results.slice(0,2).filter(r => r.status === 'rejected').map(r => r.reason.message);
+        return Object.assign({}, results[2].status === 'fulfilled' ? results[2].value : {developer}, {name:typeof manifest.name === 'string' && manifest.name.trim() ? manifest.name : entry.name,version:typeof manifest.version === 'string' ? manifest.version : '',supported:typeof manifest.supported === 'string' ? manifest.supported : '',
             description:paragraph(readme) || (typeof manifest.description === 'string' && manifest.description) || entry.description || 'No description available.',readme,
-            readmeUrl:base+'README.md',bannerUrl:base+'banner.png',error:errors.join('; ')};
+            readmeUrl:base+'README.md',bannerUrl:base+'banner.png',error:errors.join('; ')});
     }
     function details(entry, button) {
         opener = button;$('#details-title').textContent=entry.name;
@@ -126,6 +136,7 @@
             }
         }
         node.appendChild(banner);const content=el('div','store-card-content');content.appendChild(el('h2','store-card-name',entry.name));
+        if (!entry.stock) { const publisher=el('p','store-publisher');publisher.appendChild(el('span',null,entry.developer || 'Independent developer'));publisher.appendChild(el('span',null,'★ '+(typeof entry.stars==='number'?entry.stars.toLocaleString():'—')));content.appendChild(publisher); }
         content.appendChild(el('p','store-description',entry.loading?'Loading description…':entry.description || (entry.error?'Metadata unavailable. Use Retry to try again.':'No description available.')));
         const actions=el('div','store-actions'),button=el('button','btn store-details','Details');button.type='button';button.setAttribute('aria-label','Details for '+entry.name);
         button.addEventListener('click',()=>details(entry,button));actions.appendChild(button);
@@ -146,6 +157,7 @@
         category=section;$('.store-switch').classList.toggle('is-skills',section==='skills');
         document.querySelectorAll('.store-switch-tab').forEach(button=>{const selected=button.dataset.category===section;button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;if(selected && focus)button.focus();});
         $('#store-themes').hidden=section!=='themes';$('#store-skills').hidden=section!=='skills';render();
+        $('#skills-notice').hidden=section!=='skills';
     }
     function refresh() {
         if(refreshing)return refreshing;
@@ -178,5 +190,5 @@
         }
     });
     cached=readCache();entries=cached.slice();render();refresh();
-    setInterval(()=>{if(!document.hidden)refresh();},5*60*1000);
+    setInterval(()=>{if(!document.hidden)refresh();},60*60*1000);
 }());

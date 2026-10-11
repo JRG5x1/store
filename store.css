@@ -55,3 +55,5 @@ body.has-dialog { overflow: hidden; }
 @media (max-width: 1000px) { .store-card { flex-basis: calc(50% - 20px); } }
 @media (max-width: 640px) { .store { padding: 24px 10px; } .store-card { flex-basis: calc(100% - 20px); } .store-topbar { justify-content: center; } h1 { width: 100%; text-align: center; margin: 0 0 2px; } .theme-details { padding: 16px 12px; } .theme-details-card { padding: 20px; } }
 @media (prefers-reduced-motion: reduce) { .store-switch-slider, .store-switch-tab { transition: none; } }
+.store-publisher { color: var(--muted); font-size: 12px; margin: 4px 0 12px; display: flex; justify-content: space-between; gap: 12px; }
+.store-safety-note { padding: 12px 16px; border-radius: 14px; border: 1px solid var(--line); font-size: 13px; line-height: 1.5; margin: 0 0 22px; }

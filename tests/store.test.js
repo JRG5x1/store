@@ -21,7 +21,8 @@ const server=http.createServer((req,res)=>{
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
  try {
   const context=await browser.newContext({viewport:{width:1440,height:960},colorScheme:'light'});
-  await context.addInitScript(()=>{window.__storeRefresh=null;window.setInterval=(callback,delay)=>{if(delay===300000)window.__storeRefresh=callback;return 1;};});
+  await context.addInitScript(()=>{window.__storeRefresh=null;window.setInterval=(callback,delay)=>{if(delay===3600000)window.__storeRefresh=callback;return 1;};});
+  await context.route('https://api.github.com/repos/**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ owner: { login: 'example' }, stargazers_count: 42 }) }));
   await context.route('https://raw.githubusercontent.com/**',async route=>{
    const u=new URL(route.request().url());const parts=u.pathname.split('/');const repo=parts[2],file=parts.slice(4).join('/');
    if(offline||(repo==='broken'&&broken)){await route.fulfill({status:503,body:'Unavailable'});return;}
@@ -34,6 +35,8 @@ const server=http.createServer((req,res)=>{
   await page.goto(url+'/');await page.waitForFunction(()=>!document.querySelector('#store-status').textContent.includes('Loading'));
   assert.strictEqual(await page.locator('#store-themes .store-card').count(),3);
   assert.strictEqual(await page.locator('#store-themes .store-card-name').first().textContent(),'None');
+  assert((await page.locator('#store-themes .store-publisher').first().textContent()).includes('example'));
+  assert((await page.locator('#store-themes .store-publisher').first().textContent()).includes('★ 42'));
   assert.strictEqual(await page.locator('nav,.toolbar,[data-action="install-theme"]').count(),0);
   assert.strictEqual(await page.getByRole('button',{name:/install/i}).count(),0);
   assert((await page.locator('.store-description').nth(1).textContent()).includes('First description paragraph.'));
@@ -46,6 +49,8 @@ const server=http.createServer((req,res)=>{
   assert.strictEqual(await page.evaluate(()=>document.activeElement.getAttribute('aria-label')),'Details for Demo');
   await page.getByRole('tab',{name:'Skills',exact:true}).click();await page.waitForSelector('#store-skills:not([hidden])');
   assert.strictEqual(await page.locator('#store-skills .store-card-name').textContent(),'Example Skill');
+  assert(await page.locator('#skills-notice').isVisible());
+  assert((await page.locator('#store-skills .store-publisher').textContent()).includes('★ 42'));
   assert((await page.locator('#store-skills .store-description').textContent()).includes('A useful skill.'));
   await page.getByRole('tab',{name:'Skills',exact:true}).press('ArrowLeft');assert(await page.getByRole('tab',{name:'Themes',exact:true}).getAttribute('aria-selected')==='true');
   for(const mode of ['light','dark'])for(const width of [320,390,768,1440]){

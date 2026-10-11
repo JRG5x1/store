@@ -41,8 +41,11 @@ Details safely render Markdown and README images; relative images resolve
 beside the README. Missing banners use a fallback. Details close with Close,
 Escape, or a backdrop click and keep keyboard focus inside while open.
 
-The page refreshes every five minutes while visible. Metadata failures show a
+The page refreshes every one hour while visible. Metadata failures show a
 Retry button; cached entries remain available when the catalog cannot refresh.
+Cards show the GitHub developer and star count. Stars are cached for an hour
+to reduce anonymous GitHub API requests; unavailable counts display `—`.
+The Skills page includes the official-store review and malware notice.
 Browser storage is optional. Colors follow the viewing device's bright/dark
 preference, matching BEacon's System appearance.
 

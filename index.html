@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Browse themes and skills for Jibo in the 5x1 Store.">
+<title>5x1 Store</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="store.css">
+<script src="markdown.js" defer></script>
+<script src="store.js" defer></script>
+</head>
+<body>
+<main class="store">
+    <div class="store-topbar">
+        <h1>Store</h1>
+        <div class="store-switch" role="tablist" aria-label="Store category">
+            <span class="store-switch-slider" aria-hidden="true"></span>
+            <button class="store-switch-tab" id="tab-themes" type="button" role="tab" aria-selected="true" aria-controls="store-themes" data-category="themes">Themes</button>
+            <button class="store-switch-tab" id="tab-skills" type="button" role="tab" aria-selected="false" aria-controls="store-skills" data-category="skills" tabindex="-1">Skills</button>
+        </div>
+    </div>
+    <div class="store-status"><p id="store-status" role="status">Loading storefront…</p><button class="btn" id="retry" type="button" hidden>Retry</button></div>
+    <section id="store-themes" class="store-grid" role="tabpanel" aria-labelledby="tab-themes"></section>
+    <section id="store-skills" class="store-grid" role="tabpanel" aria-labelledby="tab-skills" hidden></section>
+    <noscript><p class="empty">Enable JavaScript to load the storefront.</p></noscript>
+</main>
+<div class="theme-details" id="details" role="dialog" aria-modal="true" aria-labelledby="details-title" hidden>
+    <div class="theme-details-card">
+        <button class="btn close" id="close-details" type="button">Close</button>
+        <h2 id="details-title"></h2>
+        <p class="hint" id="details-meta"></p>
+        <a class="btn" id="details-source" target="_blank" rel="noopener noreferrer">View repository</a>
+        <div class="theme-readme" id="details-readme"></div>
+    </div>
+</div>
+</body>
+</html>

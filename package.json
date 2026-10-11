@@ -1,0 +1,6 @@
+{
+  "name": "5x1-store",
+  "private": true,
+  "scripts": { "test": "node tests/store.test.js" },
+  "devDependencies": { "playwright": "1.64.0" }
+}

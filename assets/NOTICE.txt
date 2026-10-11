@@ -1,0 +1,2 @@
+cancel.svg: Google Material Icons, Apache 2.0. https://github.com/google/material-design-icons
+Proxima font assets are reused from the BEacon WebUI.

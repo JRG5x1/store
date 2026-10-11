@@ -1,7 +1,7 @@
 {
     "themes": [
         "Astra", {
-            "url": "https://github.com/ZaneThePython/Astra"
+            "url": "http://github.com/ZaneThePython/Astra"
         },
         "None", {
             "url": "."

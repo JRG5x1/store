@@ -15,6 +15,9 @@
         "JiboAreo", {
             "url": "https://github.com/cs-453453/jiboaero2"
         },
+        "HandDrawn", {
+            "url": "https://github.com/cs-453453/HandDrawnTheme"
+        },
         "None", {
             "url": "."
         }

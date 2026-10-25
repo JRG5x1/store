@@ -25,6 +25,9 @@
     "skills": [
         "Bad Apple", {
             "url": "https://github.com/ZaneThePython/BadApple"
+        },
+        "JiboTube Pro", {
+            "url": "https://github.com/ZaneThePython/JiboTubePro"
         }
     ]
 }

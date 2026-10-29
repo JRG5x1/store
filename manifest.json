@@ -28,6 +28,9 @@
         },
         "JiboTube Pro", {
             "url": "https://github.com/ZaneThePython/JiboTubePro"
+        },
+        "Pomodoro", {
+            "url": "https://github.com/ZaneThePython/JiboPomodoro"
         }
     ]
 }

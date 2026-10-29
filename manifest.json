@@ -31,6 +31,9 @@
         },
         "Pomodoro", {
             "url": "https://github.com/ZaneThePython/JiboPomodoro"
+        },
+        "Sound Machine", {
+            "url": "https://github.com/ZaneThePython/JiboSoundMachine"
         }
     ]
 }

@@ -34,6 +34,9 @@
         },
         "Sound Machine", {
             "url": "https://github.com/ZaneThePython/JiboSoundMachine"
+        },
+        "Metronome", {
+            "url": "https://github.com/ZaneThePython/JiboMetronome"
         }
     ]
 }

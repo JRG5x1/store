@@ -37,6 +37,9 @@
         },
         "Metronome", {
             "url": "https://github.com/ZaneThePython/JiboMetronome"
+        },
+        "Tamagotchi", {
+            "url": "https://github.com/ZaneThePython/JiboTamagotchi"
         }
     ]
 }

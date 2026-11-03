@@ -18,6 +18,27 @@
         "HandDrawn", {
             "url": "https://github.com/cs-453453/HandDrawnTheme"
         },
+        "NovaCoreHolo", {
+            "url": "https://github.com/Matt87c/jibo-nova-core-holographic-theme"
+        },
+        "QuantumIrisCyber", {
+            "url": "https://github.com/Matt87c/jibo-quantum-iris-cybernetic-theme"
+        },
+        "NovaHalo", {
+            "url": "https://github.com/Matt87c/jibo-nova-halo-theme"
+        },
+        "NovaCore", {
+            "url": "https://github.com/Matt87c/jibo-nova-core-theme"
+        },
+        "QuantumIris", {
+            "url": "https://github.com/Matt87c/jibo-quantum-iris-theme"
+        },
+        "NovaSentientEye", {
+            "url": "https://github.com/Matt87c/jibo-nova-sentient-eye-theme"
+        },
+        "NovaSentientOrb", {
+            "url": "https://github.com/Matt87c/jibo-nova-sentient-orb-theme"
+        },
         "None", {
             "url": "."
         }

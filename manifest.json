@@ -39,6 +39,9 @@
         "NovaSentientOrb", {
             "url": "https://github.com/Matt87c/jibo-nova-sentient-orb-theme"
         },
+        "HalEye", {
+            "url": "https://github.com/Matt87c/jibo-hal-eye-theme"
+        },
         "None", {
             "url": "."
         }

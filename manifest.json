@@ -64,6 +64,9 @@
         },
         "Tamagotchi", {
             "url": "https://github.com/ZaneThePython/JiboTamagotchi"
+        },
+        "Hidden Skills", {
+            "url": "https://github.com/ZaneThePython/JiboHiddenSkills"
         }
     ]
 }

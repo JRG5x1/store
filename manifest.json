@@ -25,7 +25,8 @@
             "url": "https://github.com/Matt87c/jibo-quantum-iris-cybernetic-theme"
         },
         "NovaHalo", {
-            "url": "https://github.com/Matt87c/jibo-nova-halo-theme"
+            "url": "https://github.com/Matt87c/jibo-nova-halo-theme",
+            "burnInWarning": true
         },
         "NovaCore", {
             "url": "https://github.com/Matt87c/jibo-nova-core-theme"

@@ -3,6 +3,7 @@
     'use strict';
     const $ = selector => document.querySelector(selector);
     const cacheKey = '5x1-store-catalog-v1';
+    const burnInText = 'This theme has been tested and may cause burn-in or ghosting on certain screens.';
     let entries = [], category = 'themes', refreshing = null, opener = null, catalogError = '', cached = [];
     function el(tag, css, text) {
         const node = document.createElement(tag); if (css) node.className = css;
@@ -29,7 +30,7 @@
                 const url = safeUrl(item.url, new URL('manifest.json', location.href));
                 if (!url) throw new Error('Invalid URL for ' + (name || 'store entry'));
                 if (url.hostname.toLowerCase() === 'github.com') url.protocol = 'https:';
-                if (!out.some(e => e.section === section && e.url === url.href)) out.push({name:name || 'Untitled',section,url:url.href});
+                if (!out.some(e => e.section === section && e.url === url.href)) out.push({name:name || 'Untitled',section,url:url.href,burnInWarning:item.burnInWarning === true});
             }
             if (out.filter(e => e.section === section).length > 100) throw new Error('Too many ' + section + ' entries');
         });
@@ -138,6 +139,7 @@
         node.appendChild(banner);const content=el('div','store-card-content');content.appendChild(el('h2','store-card-name',entry.name));
         if (!entry.stock) { const publisher=el('p','store-publisher');publisher.appendChild(el('span',null,entry.developer || 'Independent developer'));publisher.appendChild(el('span',null,'★ '+(typeof entry.stars==='number'?entry.stars.toLocaleString():'—')));content.appendChild(publisher); }
         content.appendChild(el('p','store-description',entry.loading?'Loading description…':entry.description || (entry.error?'Metadata unavailable. Use Retry to try again.':'No description available.')));
+        if (entry.burnInWarning) content.appendChild(el('p','store-warning',burnInText));
         const actions=el('div','store-actions'),button=el('button','btn store-details','Details');button.type='button';button.setAttribute('aria-label','Details for '+entry.name);
         button.addEventListener('click',()=>details(entry,button));actions.appendChild(button);
         if (!entry.stock) {const link=el('a','store-source-link','View source');link.href=entry.url;link.target='_blank';link.rel='noopener noreferrer';actions.appendChild(link);}

@@ -2,7 +2,7 @@
 const assert=require('assert'),http=require('http'),fs=require('fs'),path=require('path');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..');
-let catalog={themes:['Demo',{url:'http://github.com/example/demo'},'None',{url:'.'},{name:'Broken',url:'https://github.com/example/broken'}],skills:[{name:'Example Skill',url:'https://github.com/example/skill'}]};
+let catalog={themes:['Demo',{url:'http://github.com/example/demo',burnInWarning:true},'None',{url:'.'},{name:'Broken',url:'https://github.com/example/broken'}],skills:[{name:'Example Skill',url:'https://github.com/example/skill'}]};
 let offline=false,broken=true;
 const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60"><rect width="100" height="60" fill="#54b9e6"/></svg>';
 const readme='# Demo\n\nFirst **description** paragraph.\n\n![Preview](face/eye.png)\n\n<script>window.bad=true</script>\n\n[Unsafe](javascript:alert(1))';
@@ -40,6 +40,9 @@ const server=http.createServer((req,res)=>{
   assert.strictEqual(await page.locator('nav,.toolbar,[data-action="install-theme"]').count(),0);
   assert.strictEqual(await page.getByRole('button',{name:/install/i}).count(),0);
   assert((await page.locator('.store-description').nth(1).textContent()).includes('First description paragraph.'));
+  assert.strictEqual(await page.locator('#store-themes .store-warning').count(),1);
+  assert((await page.locator('#store-themes .store-card',{has:page.locator('.store-warning')}).locator('.store-card-name').textContent())==='Demo');
+  assert((await page.locator('.store-warning').textContent()).includes('may cause burn-in or ghosting on certain screens'));
   await page.getByRole('button',{name:'Details for Demo',exact:true}).click();
   await page.waitForSelector('#details:not([hidden])');
   assert((await page.locator('.theme-readme-image').getAttribute('src')).endsWith('/HEAD/face/eye.png'));

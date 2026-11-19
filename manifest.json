@@ -71,6 +71,9 @@
         },
         "Stargazer", {
             "url": "https://github.com/CasperH2O/Stargazer"
+        },
+        "Screensaver", {
+            "url": "https://github.com/ZaneThePython/Screensaver"
         }
     ]
 }

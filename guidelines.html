@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="What themes and skills need before they are added to the 5x1 Store.">
+<title>Store Guidelines · 5x1 Store</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="store.css">
+</head>
+<body>
+<main class="store theme-readme">
+    <div class="store-topbar"><h1>Store Guidelines</h1><a class="btn" href="./">Back to the Store</a></div>
+    <p>Everything in the 5x1 Store is reviewed by a person before it is added. These guidelines say what we look for, so your theme or skill gets in quickly and owners can trust what they install on their Jibo.</p>
+
+    <h2>Submitting</h2>
+    <ul>
+        <li>Open a pull request on <a href="https://github.com/JRG5x1/store">JRG5x1/store</a> that adds your public repository to <code>manifest.json</code>.</li>
+        <li>The repository needs a <code>manifest.json</code> (skills can use <code>package.json</code>), a <code>README.md</code> that says what it does, and an optional <code>banner.png</code>. Skills also need an <code>icon.png</code>.</li>
+        <li>The installable ZIP must be 32 MB or smaller.</li>
+        <li>Updates go live from your repository, so every update must follow these guidelines too.</li>
+    </ul>
+
+    <h2>Safety and privacy</h2>
+    <ul>
+        <li>No malware, hidden behaviour, tracking, ads or crypto mining. Code may be minified only if the readable source is in the repository.</li>
+        <li>Ask only for the permissions your skill really uses, and say in the README why it needs each one. Owners see them before installing.</li>
+        <li>Use the microphone and cameras only while your skill is open, unless it says otherwise and has the <code>background</code> permission.</li>
+        <li>Do not send recordings, photos, names or anything from Jibo's memory off the robot without saying so clearly in the README and in the skill.</li>
+        <li><code>run-programs</code> and the Jibo file permissions give a skill a lot of power. Skills asking for them get a closer review and need a clear reason.</li>
+    </ul>
+
+    <h2>Quality</h2>
+    <ul>
+        <li>It must install, open, close and uninstall cleanly without breaking Jibo or other skills.</li>
+        <li>Skills run on Jibo's Node 6, so test on a real robot. Set the lowest 5x1 version it works with in <code>supported</code>.</li>
+        <li>Voice-only skills should not add menu buttons.</li>
+        <li>Name and describe it honestly. No copying another listing's name, icon or banner.</li>
+    </ul>
+
+    <h2>Content and rights</h2>
+    <ul>
+        <li>Keep it friendly for everyone in the home: no hateful, sexual, violent or harassing content.</li>
+        <li>You must have the right to share every image, sound, song and font you include. Note third-party licences in the repository.</li>
+        <li>Don't pretend to be Jibo Inc., 5x1, the Jibo Revival Group or anyone else.</li>
+    </ul>
+
+    <h2>Removal</h2>
+    <p>We may remove a listing that breaks these guidelines, stops working or is abandoned. If there is time we will open an issue first. Things installed from other storefronts or ZIP files are not reviewed by us.</p>
+</main>
+</body>
+</html>

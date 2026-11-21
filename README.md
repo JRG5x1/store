@@ -1,6 +1,6 @@
 # 5x1 Store
 
-The primary storefront for BEam. To add a theme or skill, open a pull request
+The primary storefront for BEam. Listings follow the [Store Guidelines](guidelines.html). To add a theme or skill, open a pull request
 containing its repository or manifest URL in `manifest.json`.
 
 The repository also contains a buildless static storefront. Serve this directory

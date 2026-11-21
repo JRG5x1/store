@@ -28,7 +28,7 @@ const server=http.createServer((req,res)=>{
    if(offline||(repo==='broken'&&broken)){await route.fulfill({status:503,body:'Unavailable'});return;}
    if(file==='banner.png'||file==='face/eye.png'){await route.fulfill({contentType:'image/svg+xml',body:svg});return;}
    if(file==='manifest.json'&&repo==='skill'){await route.fulfill({status:404,body:'Missing'});return;}
-   const data=file==='manifest.json'?JSON.stringify({name:repo==='new'?'New Theme':repo==='broken'?'Recovered':'Demo',version:'1.0.0',supported:'3.1.5',type:'theme'}):file==='package.json'?JSON.stringify({name:'Example Skill',version:'2.0.0',type:'module'}):file==='README.md'?repo==='skill'?'# Skill\n\nA useful skill.':readme:null;
+   const data=file==='manifest.json'?JSON.stringify({name:repo==='new'?'New Theme':repo==='broken'?'Recovered':'Demo',version:'1.0.0',supported:'3.1.5',type:'theme'}):file==='package.json'?JSON.stringify({name:'Example Skill',version:'2.0.0',permissions:['camera'],type:'module'}):file==='README.md'?repo==='skill'?'# Skill\n\nA useful skill.':readme:null;
    await route.fulfill({status:data===null?404:200,body:data||'Missing',contentType:file.endsWith('.json')?'application/json':'text/plain'});
   });
   const page=await context.newPage();const errors=[];page.on('pageerror',error=>errors.push(error.message));
@@ -55,6 +55,10 @@ const server=http.createServer((req,res)=>{
   assert(await page.locator('#skills-notice').isVisible());
   assert((await page.locator('#store-skills .store-publisher').textContent()).includes('★ 42'));
   assert((await page.locator('#store-skills .store-description').textContent()).includes('A useful skill.'));
+  await page.getByRole('button',{name:'Details for Example Skill',exact:true}).click();await page.waitForSelector('#details:not([hidden])');
+  const about=await page.locator('#details-about').textContent();
+  assert(about.includes('By example')&&!about.includes('Trusted')&&about.includes('This skill can:')&&about.includes('take photos'),about);
+  await page.keyboard.press('Escape');
   await page.getByRole('tab',{name:'Skills',exact:true}).press('ArrowLeft');assert(await page.getByRole('tab',{name:'Themes',exact:true}).getAttribute('aria-selected')==='true');
   for(const mode of ['light','dark'])for(const width of [320,390,768,1440]){
    await page.emulateMedia({colorScheme:mode});await page.setViewportSize({width,height:960});await page.waitForTimeout(250);

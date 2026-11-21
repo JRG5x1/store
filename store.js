@@ -110,13 +110,28 @@
         const manifest = results[0].status === 'fulfilled' ? results[0].value : entry;
         const readme = results[1].status === 'fulfilled' ? results[1].value || '' : entry.readme || '';
         const errors = results.slice(0,2).filter(r => r.status === 'rejected').map(r => r.reason.message);
-        return Object.assign({}, results[2].status === 'fulfilled' ? results[2].value : {developer}, {name:typeof manifest.name === 'string' && manifest.name.trim() ? manifest.name : entry.name,version:typeof manifest.version === 'string' ? manifest.version : '',supported:typeof manifest.supported === 'string' ? manifest.supported : '',
+        return Object.assign({}, results[2].status === 'fulfilled' ? results[2].value : {developer}, {name:typeof manifest.name === 'string' && manifest.name.trim() ? manifest.name : entry.name,version:typeof manifest.version === 'string' ? manifest.version : '',supported:typeof manifest.supported === 'string' ? manifest.supported : '',permissions:Array.isArray(manifest.permissions) ? manifest.permissions.filter(p => typeof p === 'string') : [],
             description:paragraph(readme) || (typeof manifest.description === 'string' && manifest.description) || entry.description || 'No description available.',readme,
             readmeUrl:base+'README.md',bannerUrl:base+'banner.png',error:errors.join('; ')});
+    }
+    // GitHub accounts whose work 5x1 vouches for; the name is the repo's GitHub owner, so it can't be faked. Matches BEacon.
+    const TRUSTED_DEVELOPERS=['zanethepython'];
+    const PERMISSION_TEXT={microphone:'hear you and read what you say to Jibo while it is open',camera:'take photos and see through Jibo’s cameras while it is open',background:'run all the time, even when it is not open',
+        'local-network':'connect to other devices on your home network','jibo-apis':'use Jibo’s own services directly','read-jibo-files':'read Jibo’s system files','edit-jibo-files':'change Jibo’s system files',
+        'read-kb':'read what Jibo knows (people, photos, settings, other skills’ data)','edit-kb':'change what Jibo knows (people, photos, settings, other skills’ data)','run-programs':'run its own programs — this gives it FULL ACCESS to Jibo'};
+    function aboutPackage(entry) {
+        const box=$('#details-about');box.textContent='';box.hidden=!!entry.stock;if (entry.stock) return;
+        const by=box.appendChild(el('p',null,entry.developer ? 'By '+entry.developer : 'Developer unknown'));
+        if (entry.developer && TRUSTED_DEVELOPERS.includes(entry.developer.toLowerCase())) { by.append(' · ');by.appendChild(el('span','trusted-developer','✓ Trusted developer')); }
+        if (entry.section !== 'skills') return;
+        if (!entry.permissions || !entry.permissions.length) { box.appendChild(el('p',null,'This skill doesn’t ask for any special access to Jibo.'));return; }
+        box.appendChild(el('p',null,'This skill can:'));const list=box.appendChild(el('ul'));
+        entry.permissions.forEach(p => list.appendChild(el('li',null,PERMISSION_TEXT[p] || p)));
     }
     function details(entry, button) {
         opener = button;$('#details-title').textContent=entry.name;
         $('#details-meta').textContent=[entry.version && 'Version '+entry.version,entry.supported && 'Needs version '+entry.supported,entry.error && 'Metadata unavailable: '+entry.error].filter(Boolean).join(' · ');
+        aboutPackage(entry);
         const link=$('#details-source');link.hidden=!!entry.stock;
         if (!entry.stock) { link.href=entry.url;link.textContent=new URL(entry.url).hostname==='github.com'?'View repository':'View source'; }
         window.StoreMarkdown($('#details-readme'),entry.readme || entry.description || 'No README available.',{baseUrl:entry.readmeUrl});

@@ -57,7 +57,7 @@ const server=http.createServer((req,res)=>{
   assert((await page.locator('#store-skills .store-description').textContent()).includes('A useful skill.'));
   await page.getByRole('button',{name:'Details for Example Skill',exact:true}).click();await page.waitForSelector('#details:not([hidden])');
   const about=await page.locator('#details-about').textContent();
-  assert(about.includes('By example')&&!about.includes('Trusted')&&about.includes('This skill can:')&&about.includes('take photos'),about);
+  assert(about.includes('Developer')&&about.includes('example')&&!about.includes('Trusted')&&about.includes('This skill can:')&&about.includes('take photos'),about);
   await page.keyboard.press('Escape');
   await page.getByRole('tab',{name:'Skills',exact:true}).press('ArrowLeft');assert(await page.getByRole('tab',{name:'Themes',exact:true}).getAttribute('aria-selected')==='true');
   for(const mode of ['light','dark'])for(const width of [320,390,768,1440]){

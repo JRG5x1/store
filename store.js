@@ -121,11 +121,12 @@
         'read-kb':'read what Jibo knows (people, photos, settings, other skills’ data)','edit-kb':'change what Jibo knows (people, photos, settings, other skills’ data)','run-programs':'run its own programs — this gives it FULL ACCESS to Jibo'};
     function aboutPackage(entry) {
         const box=$('#details-about');box.textContent='';box.hidden=!!entry.stock;if (entry.stock) return;
-        const by=box.appendChild(el('p',null,entry.developer ? 'By '+entry.developer : 'Developer unknown'));
-        if (entry.developer && TRUSTED_DEVELOPERS.includes(entry.developer.toLowerCase())) { by.append(' · ');by.appendChild(el('span','trusted-developer','✓ Trusted developer')); }
+        const who=box.appendChild(el('section','details-card'));who.appendChild(el('h3',null,'Developer'));who.appendChild(el('p',null,entry.developer || 'Unknown'));
+        if (entry.developer && TRUSTED_DEVELOPERS.includes(entry.developer.toLowerCase())) who.appendChild(el('p','trusted-developer','✓ Trusted developer'));
         if (entry.section !== 'skills') return;
-        if (!entry.permissions || !entry.permissions.length) { box.appendChild(el('p',null,'This skill doesn’t ask for any special access to Jibo.'));return; }
-        box.appendChild(el('p',null,'This skill can:'));const list=box.appendChild(el('ul'));
+        const can=box.appendChild(el('section','details-card'));can.appendChild(el('h3',null,'Permissions'));
+        if (!entry.permissions || !entry.permissions.length) { can.appendChild(el('p',null,'This skill doesn’t ask for any special access to Jibo.'));return; }
+        can.appendChild(el('p',null,'This skill can:'));const list=can.appendChild(el('ul'));
         entry.permissions.forEach(p => list.appendChild(el('li',null,PERMISSION_TEXT[p] || p)));
     }
     function details(entry, button) {

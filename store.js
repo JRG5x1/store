@@ -119,15 +119,21 @@
     const PERMISSION_TEXT={microphone:'hear you and read what you say to Jibo while it is open',camera:'take photos and see through Jibo’s cameras while it is open',background:'run all the time, even when it is not open',
         'local-network':'connect to other devices on your home network','jibo-apis':'use Jibo’s own services directly','read-jibo-files':'read Jibo’s system files','edit-jibo-files':'change Jibo’s system files',
         'read-kb':'read what Jibo knows (people, photos, settings, other skills’ data)','edit-kb':'change what Jibo knows (people, photos, settings, other skills’ data)','run-programs':'run its own programs — this gives it FULL ACCESS to Jibo'};
+    const RISKY_PERMISSIONS=['run-programs','edit-jibo-files','edit-kb'];
     function aboutPackage(entry) {
         const box=$('#details-about');box.textContent='';box.hidden=!!entry.stock;if (entry.stock) return;
-        const who=box.appendChild(el('section','details-card'));who.appendChild(el('h3',null,'Developer'));who.appendChild(el('p',null,entry.developer || 'Unknown'));
-        if (entry.developer && TRUSTED_DEVELOPERS.includes(entry.developer.toLowerCase())) who.appendChild(el('p','trusted-developer','✓ Trusted developer'));
+        const dev=entry.developer;const who=box.appendChild(el('section','details-card details-developer'));
+        if (dev) { const avatar=who.appendChild(el('img','details-avatar'));Object.assign(avatar,{alt:'',width:56,height:56,loading:'lazy',onerror:()=>{avatar.hidden=true;}});avatar.src='https://github.com/'+encodeURIComponent(dev)+'.png?size=112'; }
+        const text=who.appendChild(el('div'));text.appendChild(el('h3',null,'Developer'));
+        if (dev) { const link=text.appendChild(el('a','details-developer-name',dev));Object.assign(link,{href:'https://github.com/'+encodeURIComponent(dev),target:'_blank',rel:'noopener noreferrer'}); }
+        else text.appendChild(el('p','details-developer-name','Unknown'));
+        const trusted=!!dev && TRUSTED_DEVELOPERS.includes(dev.toLowerCase());
+        text.appendChild(el('p',trusted?'trusted-developer':'details-hint',trusted?'✓ Trusted developer':'Independent developer'));
         if (entry.section !== 'skills') return;
         const can=box.appendChild(el('section','details-card'));can.appendChild(el('h3',null,'Permissions'));
-        if (!entry.permissions || !entry.permissions.length) { can.appendChild(el('p',null,'This skill doesn’t ask for any special access to Jibo.'));return; }
-        can.appendChild(el('p',null,'This skill can:'));const list=can.appendChild(el('ul'));
-        entry.permissions.forEach(p => list.appendChild(el('li',null,PERMISSION_TEXT[p] || p)));
+        if (!entry.permissions || !entry.permissions.length) { can.appendChild(el('p','details-safe','This skill doesn’t ask for any special access to Jibo.'));return; }
+        can.appendChild(el('p','details-hint','This skill can:'));const list=can.appendChild(el('ul','details-permissions'));
+        entry.permissions.forEach(p => list.appendChild(el('li',RISKY_PERMISSIONS.includes(p)?'risky':null,PERMISSION_TEXT[p] || p)));
     }
     function details(entry, button) {
         opener = button;$('#details-title').textContent=entry.name;
